@@ -4,14 +4,6 @@
 #include <stdlib.h>
 
 
-const RGBColor_t RED            = {255,0,0};
-const RGBColor_t GREEN          = {0,255,0};
-const RGBColor_t BLUE           = {0,0,255};
-const RGBColor_t AZURE          = {0,255,255};
-const RGBColor_t YELLOW         = {255,255,0};
-const RGBColor_t MAGENTA        = {255,0,255};
-const RGBColor_t BLACK          = {0,0,0};
-const RGBColor_t WHITE          = {255,255,255};
 
 const RGBColor_t * pure_colors[] = {&RED, &GREEN, &BLUE, &YELLOW, &MAGENTA, &WHITE};
 

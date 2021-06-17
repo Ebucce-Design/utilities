@@ -27,15 +27,7 @@ static inline void stepper_timer_update(stepper_motor_t * m, u16 period)  // thi
 
 void stepper_timer_cmd(stepper_motor_t * m,FunctionalState NewState)
 {
-  if(m->timer == STEPPER_TIMER2)
-  {
-  TIM1_Cmd(NewState);
-  }
-  
-  if(m->timer == STEPPER_TIMER2)
-  {
-  TIM2_Cmd(NewState);
-  } 
+
 }
 
 void stepper_init(stepper_motor_t * m, pin_t * A1, pin_t * A2, pin_t * B1, pin_t * B2, u8 timer)
@@ -112,7 +104,23 @@ void stepper_set_dir(stepper_motor_t * m, u8 dir)
     m->A2 = tmp;
 }
 
-void stepper_move(stepper_motor_t * m, u16 steps)
+//////////////////////////////////////////////////////////
+
+void stepper_move(stepper_motor_t * m, s16 steps, u16 accel, u16 speed)
+{
+  if(steps < 0)
+  {
+    m->dir = MOTOR_DIR_CW;
+    steps = -steps;
+  }
+  else
+  {
+    m->dir = MOTOR_DIR_CCW;
+  }
+}
+
+//stepper motor driver uses 16 bit timer that should tick at frequency 100-500 kHz
+void stepper_timer_isr(stepper_motor_t * m)
 {
 
 

@@ -11,12 +11,23 @@ extern unsigned char NodeId;
 
 
 
-void rgb_SetColor(unsigned char LedId, RGBColor_t Color)
+void rgb_SetColor(unsigned char LedId, const RGBColor_t * Color)
 {
   if(LedId > NB_LEDS ) return; //to avoid overflow
-  LedsArray[LedId*3]   = Color.G;
-  LedsArray[LedId*3+1] = Color.R;
-  LedsArray[LedId*3+2] = Color.B;
+  LedsArray[LedId*3]   = Color->G;
+  LedsArray[LedId*3+1] = Color->R;
+  LedsArray[LedId*3+2] = Color->B;
+}
+
+RGBColor_t rgb_GetColor(unsigned char LedId)
+{
+  RGBColor_t color = {0};
+  if(LedId > NB_LEDS ) return color; //to avoid overflow
+  
+  color.G = LedsArray[LedId*3];
+  color.R = LedsArray[LedId*3+1];
+  color.B = LedsArray[LedId*3+2];
+  return color;
 }
 
 void rgb_SendArray()

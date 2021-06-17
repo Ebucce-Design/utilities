@@ -7,14 +7,10 @@
 #define TIMER_PRESCALER         128
 #define TIMER_PERIOD            125
 
-typedef struct 
-{
-u32 expire_time;
-}
-timer_t;
+typedef u32 timer_t;
 
-void timer_set(timer_t* t, u32 interval_ms);
-u8 timer_expired(timer_t* t);
-void delay_blocking_ms(u16 delay);
-void time_service_timer_init();
+void    timer_set(timer_t * t, u32 interval_ms);
+u8      timer_expired(timer_t* t);
+void    delay_blocking_ms(u16 delay);
+void    time_service_timer_init();
 #endif

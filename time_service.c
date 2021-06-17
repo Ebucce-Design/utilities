@@ -16,14 +16,14 @@ u32 get_uptime()
   return time;
 }
 
-void timer_set(timer_t* t, u32 interval)
+inline void timer_set(timer_t * t, u32 interval)
 {
-  t->expire_time = get_uptime() + interval;
+  *t = get_uptime() + interval;
 }
 
-u8 timer_expired(timer_t* t)
+inline u8 timer_expired(timer_t * t)
 {
-  if (get_uptime() > t->expire_time) 
+  if (get_uptime() > *t) 
   {
     return 1;
   }
@@ -39,7 +39,6 @@ while(expire_time > get_uptime())
   asm("NOP");
 } 
 }
-
 
 void time_service_timer_init()
 {
