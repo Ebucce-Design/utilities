@@ -14,6 +14,7 @@ static u8 bitmask_B = 0;
 static u8 bitmask_C = 0;
 static u8 bitmask_D = 0;
 
+static u8 bam_values[BAM_CHANNELS_NUM]; //this array is only used to be able to read channel values back 
 
 void BAM_isr()  
 { 
@@ -64,9 +65,9 @@ void BAM_isr()
 }
 
 
-void bam_set_channel(u8 channel, u8 value)
+u8 bam_set_channel(u8 channel, u8 value)
 {
-  if(channel > ARRAY_SIZE(bam_channels)) return;
+  if(channel > ARRAY_SIZE(bam_channels)) return 1;
   update_flag = 0; //to avoid using not prepared propery data
   u8 bitmask = 1;
   const bam_ch_t * ch = &bam_channels[channel];  
@@ -84,6 +85,8 @@ void bam_set_channel(u8 channel, u8 value)
       }
       bitmask <<= 1;
     }
+  bam_values[channel] = value;
+  return 0;
 }
 
 void bam_update()
@@ -116,4 +119,10 @@ void bam_init()
   period = lsb_period_ticks;
   bam_timer_period_update(period);
   bam_timer_start();
+}
+
+u8 bam_get_channel(u8 channel)
+{
+  if(channel > ARRAY_SIZE(bam_channels)) return 1;
+  return bam_values[channel];
 }

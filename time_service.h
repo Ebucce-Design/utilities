@@ -9,6 +9,7 @@
 
 typedef u32 timer_t;
 
+u32 get_uptime();
 void    timer_set(timer_t * t, u32 interval_ms);
 u8      timer_expired(timer_t* t);
 void    delay_blocking_ms(u16 delay);

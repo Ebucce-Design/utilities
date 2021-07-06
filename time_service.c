@@ -1,11 +1,11 @@
 #include "time_service.h"
 
 //static u16 tick_freq =  FREQ / (TIMER_PRESCALER *  TIMER_PERIOD);
-volatile u32 uptime = 0;
+static volatile u32 uptime = 0;
 
 void uptime_routine(void)
 {
-if(uptime++ == 0xFFFFFFFF) { uptime  = 0; }
+  uptime++;
 }
 
 u32 get_uptime()
@@ -32,12 +32,12 @@ inline u8 timer_expired(timer_t * t)
 
 void delay_blocking_ms(u16 delay)
 {
-u32 expire_time = get_uptime() + delay;
+  u32 expire_time = get_uptime() + delay;
 
-while(expire_time > get_uptime())
-{
-  asm("NOP");
-} 
+  while(expire_time > get_uptime())
+  {
+    asm("NOP");
+  } 
 }
 
 void time_service_timer_init()

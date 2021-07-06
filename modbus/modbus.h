@@ -45,5 +45,5 @@ typedef struct
 }reg_map_t;
 
 u16   modbus_process_frame    (u8 * data, u16 datalen);
-void  modbus_init           (u8 adr, u8 size);
+void  modbus_init             (u8 adr, u8 size);
 #endif

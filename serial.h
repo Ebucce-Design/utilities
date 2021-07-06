@@ -9,13 +9,15 @@
 #define RX_IN_PROGRESS  BIT0
 #define TX_IN_PROGRESS  BIT1
 
+#define HALF_DUPLEX_MODE        1
+#define FULL_DUPLEX_MODE        0
 typedef struct
 {
     ringbuffer_t rx_ringbuf;
     u8* tx_buf;
     volatile u16 tx_cnt;
     volatile u8 status_reg;
-    u8 halfduplex_flag;
+    u8 duplex_mode;
 }serial_t;
 
 
@@ -27,9 +29,8 @@ u8 serial_write         (serial_t* desc, u8 * buf, u16 len);
 void serial_flush_rx    (serial_t * desc);
 void serial_open        (serial_t* desc, 
                          uint32_t BaudRate,
-                         u8   halfduplex,
                          u8 * buf, 
-                         u8   buf_len);
+                         u8 buf_len);
 
 inline void uart1_rx_isr(serial_t * desc);
 inline void uart1_tx_isr(serial_t * desc);

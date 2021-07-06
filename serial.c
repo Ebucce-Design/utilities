@@ -21,11 +21,9 @@ u8 serial_get_rx_num(serial_t* desc)
 
 void serial_open(serial_t* desc, 
                  uint32_t BaudRate,
-                 u8   halfduplex,
                  u8 * buf, 
                  u8   buf_len)
 {
-  desc->halfduplex_flag = halfduplex;
   UART1_Init (BaudRate, 
               UART1_WORDLENGTH_8D,
               UART1_STOPBITS_1,
@@ -34,8 +32,13 @@ void serial_open(serial_t* desc,
               UART1_MODE_TXRX_ENABLE);
   
   ringbuffer_init(&desc->rx_ringbuf, buf, buf_len);
+  
+  if(desc->duplex_mode == HALF_DUPLEX_MODE)
+  {
+    UART1_HalfDuplexCmd(ENABLE);
+  }
+  
   UART1_ITConfig(UART1_IT_RXNE, ENABLE);
-  UART1_HalfDuplexCmd(ENABLE);
   UART1_Cmd(ENABLE);
 }
 
@@ -75,7 +78,7 @@ u8 serial_write(serial_t* desc, u8 * buf, u16 len)
   desc->tx_buf = buf;
   desc->tx_cnt = len;
   
-  if(desc->halfduplex_flag)    
+  if(desc->duplex_mode == HALF_DUPLEX_MODE)    
   {
     UART1_RX_Cmd(DISABLE);
   }
@@ -106,7 +109,7 @@ void uart1_tx_isr(serial_t * desc)
     while(UART1_GetFlagStatus(UART1_FLAG_TC)==RESET){} //wait for the final byte to be actually transmitted
     UART1_ITConfig(UART1_IT_TXE, DISABLE);
     desc->status_reg &= ~TX_IN_PROGRESS;
-    if(desc->halfduplex_flag)    
+     if(desc->duplex_mode == HALF_DUPLEX_MODE) 
     {
       UART1_RX_Cmd(ENABLE);
     }

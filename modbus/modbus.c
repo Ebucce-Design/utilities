@@ -6,7 +6,6 @@ static u8 error     = NO_ERROR; //this global variable should contain error code
 static u8 address   = 0;              
 static u8 bufsize   = 0;        //this is a maximum buffer size for holding the response before sending it. 
 
-// Compute the MODBUS RTU CRC
 
 static u8 access_holding_reg (u16 adr, u8 mode, u16 * val)
 {
@@ -81,7 +80,7 @@ static u8 write_multiple_registers_handler (u8 * data)
   while(n--)
   {
   val =  *(data++) << 8;
-  val += *(data++);
+  val += *(data++); 
   error = access_holding_reg(adr++, REG_WRITE, &val);
   if(error) { return 0; }
   }
@@ -168,9 +167,9 @@ u16 modbus_process_frame(u8 * data, u16 datalen)
 
   if(error)
   {
-    data[1] |= 0x80;
-    data[2]  = error;
-    len = 3;
+    data[1]    |= 0x80;
+    data[2]     = error;
+    len         = 3;
   }
     
   crc = crc16(data, len);
